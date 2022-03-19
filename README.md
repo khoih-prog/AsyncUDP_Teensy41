@@ -1,0 +1,2 @@
+# AsyncUDP_Teensy41
+Fully Asynchronous UDP Library for Teensy 4.1 using QNEthernet. The library is easy to use and includes support for Unicast, Broadcast and Multicast environments. This library is one of the current or future Async libraries to support Teensy 4.1 using QNEthernet, such as AsyncHTTPRequest_Teensy41, AsyncHTTPSRequest_Teensy41, AsyncMQTT_Generic, AsyncWebServer_Teensy41, AsyncUDP_Teensy41, AsyncDNSServer_Teensy41, AsyncTCP_SSL_Teensy41, etc.
