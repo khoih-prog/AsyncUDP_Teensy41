@@ -1,0 +1,36 @@
+{
+  "name":"AsyncUDP_Teensy41",
+  "version": "1.2.1",
+  "description":"Fully Asynchronous UDP Library for Teensy 4.1 using QNEthernet. The library is easy to use and includes support for Unicast, Broadcast and Multicast environments. This library is one of the current or future Async libraries to support Teensy 4.1 using QNEthernet, such as AsyncHTTPRequest_Teensy41, AsyncHTTPSRequest_Teensy41, AsyncMQTT_Generic, AsyncWebServer_Teensy41, AsyncUDP_Teensy41, AsyncDNSServer_Teensy41, AsyncTCP_SSL_Teensy41, etc.",
+  "keywords":"communication, data, async, udp, async-udp, ntp, time, time-server, server, client, multicast, broadcast, webserver, teensy, teensy41, teensy-41, qnethernet, lwip",
+  "authors": [
+    {
+      "name": "Hristo Gochkov",
+      "url":   "https://github.com/me-no-dev"
+    },
+    {
+      "name":  "Khoi Hoang",
+      "url":   "https://github.com/khoih-prog",
+      "email": "khoih-dot-prog@gmail.com",
+      "maintainer": true
+    }  
+  ],
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/khoih-prog/AsyncUDP_Teensy41.git"
+  },
+  "homepage": "https://github.com/khoih-prog/AsyncUDP_Teensy41",
+  "export": {
+    "exclude": [
+      "linux",
+      "extras",
+      "tests"
+    ]
+  },
+  "license": "GPL-3.0",
+  "frameworks": "*",
+  "platforms": ["teensy", "avr"],
+  "examples": "examples/*/*/*.ino",
+  "headers": ["AsyncUDP_Teensy41.h", "AsyncUDP_Teensy41.hpp"]
+}
