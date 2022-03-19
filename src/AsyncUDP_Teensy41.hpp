@@ -13,7 +13,7 @@
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.2.1   K Hoang      18/03/2022 Initial coding for Teensy 4.1 using built-in QNEthernet.
-                                  Bump up version to v1.7.1 to sync with ASYNC_UDP_Teensy41 v1.2.1          
+                                  Bump up version to v1.2.1 to sync with ASYNC_UDP_Teensy41 v1.2.1            
  *****************************************************************************************************************************/
 
 #pragma once
