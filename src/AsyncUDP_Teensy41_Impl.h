@@ -1,19 +1,19 @@
 /****************************************************************************************************************************
   AsyncUdp_Impl_Teensy41.h
-  
+
   For Teensy41 with QNEthernet
-  
+
   ASYNC_UDP_Teensy41 is a Async UDP library for the Teensy41 using built-in Ethernet and QNEThernet
-  
+
   Based on and modified from ESPAsyncUDP Library (https://github.com/me-no-dev/ESPAsyncUDP)
   Built by Khoi Hoang https://github.com/khoih-prog/ASYNC_UDP_Teensy41
-  
+
   Version: 1.2.1
-  
+
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.2.1   K Hoang      18/03/2022 Initial coding for Teensy 4.1 using built-in QNEthernet.
-                                  Bump up version to v1.2.1 to sync with ASYNC_UDP_Teensy41 v1.2.1      
+                                  Bump up version to v1.2.1 to sync with ASYNC_UDP_Teensy41 v1.2.1
  *****************************************************************************************************************************/
 
 #pragma once
@@ -239,9 +239,9 @@ void AsyncUDP::_recv(udp_pcb *upcb, pbuf *pb, ip_addr_t *addr, const uint16_t& p
 }
 
 #if LWIP_VERSION_MAJOR == 1
-void AsyncUDP::_s_recv(void *arg, udp_pcb *upcb, pbuf *p, ip_addr_t *addr, uint16_t port)
+  void AsyncUDP::_s_recv(void *arg, udp_pcb *upcb, pbuf *p, ip_addr_t *addr, uint16_t port)
 #else
-void AsyncUDP::_s_recv(void *arg, udp_pcb *upcb, pbuf *p, const ip_addr_t *addr, uint16_t port)
+  void AsyncUDP::_s_recv(void *arg, udp_pcb *upcb, pbuf *p, const ip_addr_t *addr, uint16_t port)
 #endif
 {
   reinterpret_cast<AsyncUDP*>(arg)->_recv(upcb, p, (ip_addr_t *)addr, port);

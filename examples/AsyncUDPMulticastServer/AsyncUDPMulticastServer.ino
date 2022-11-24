@@ -2,13 +2,13 @@
   AsyncUDPMulticastServer.ino
 
   For Teensy41 with QNEthernet
-  
+
   AsyncUDP_Teensy41 is a Async UDP library for the Teensy41 using built-in Ethernet and QNEThernet
-  
+
   Based on and modified from ESPAsyncUDP Library (https://github.com/me-no-dev/ESPAsyncUDP)
   Built by Khoi Hoang https://github.com/khoih-prog/AsyncUDP_Teensy41
  *****************************************************************************************************************************/
- 
+
 #include "defines.h"
 
 #define ASYNC_UDP_TEENSY41_VERSION_MIN_TARGET      "AsyncUDP_Teensy41 v1.2.1"
@@ -26,12 +26,12 @@ AsyncUDP udp;
 void sendRequest();
 
 // Repeat forever, millis() resolution
-Ticker sendUDPRequest(sendRequest, UDP_REQUEST_INTERVAL_MS, 0, MILLIS); 
+Ticker sendUDPRequest(sendRequest, UDP_REQUEST_INTERVAL_MS, 0, MILLIS);
 
 void sendRequest()
 {
   UDP_LOGDEBUG("Send multicast");
-  
+
   //Send multicast
   udp.print("Anyone here?");
 }
@@ -60,18 +60,22 @@ void parsePacket(AsyncUDPPacket packet)
 void setup()
 {
   Serial.begin(115200);
+
   while (!Serial);
 
-  Serial.print("\nStart AsyncUDPMulticastServer on "); Serial.println(BOARD_NAME);
+  Serial.print("\nStart AsyncUDPMulticastServer on ");
+  Serial.println(BOARD_NAME);
   Serial.println(ASYNC_UDP_TEENSY41_VERSION);
 
 #if defined(ASYNC_UDP_TEENSY41_VERSION_MIN)
+
   if (ASYNC_UDP_TEENSY41_VERSION_INT < ASYNC_UDP_TEENSY41_VERSION_MIN)
   {
     Serial.print("Warning. Must use this example on Version equal or later than : ");
     Serial.println(ASYNC_UDP_TEENSY41_VERSION_MIN_TARGET);
   }
-#endif  
+
+#endif
 
   delay(500);
 
@@ -103,12 +107,13 @@ void setup()
   }
   else
   {
-    Serial.print(F("Connected! IP address:")); Serial.println(Ethernet.localIP());
+    Serial.print(F("Connected! IP address:"));
+    Serial.println(Ethernet.localIP());
   }
 
 #if USING_DHCP
   delay(1000);
-#else  
+#else
   delay(2000);
 #endif
 

@@ -1,19 +1,19 @@
 /****************************************************************************************************************************
   AsyncUDP_Teensy41.h
-  
+
   For Teensy41 with QNEthernet
-  
+
   ASYNC_UDP_Teensy41 is a Async UDP library for the Teensy41 using built-in Ethernet and QNEThernet
-  
+
   Based on and modified from ESPAsyncUDP Library (https://github.com/me-no-dev/ESPAsyncUDP)
   Built by Khoi Hoang https://github.com/khoih-prog/ASYNC_UDP_Teensy41
-  
+
   Version: 1.2.1
-  
+
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.2.1   K Hoang      18/03/2022 Initial coding for Teensy 4.1 using built-in QNEthernet.
-                                  Bump up version to v1.2.1 to sync with ASYNC_UDP_Teensy41 v1.2.1          
+                                  Bump up version to v1.2.1 to sync with ASYNC_UDP_Teensy41 v1.2.1
  *****************************************************************************************************************************/
 
 #pragma once
@@ -26,7 +26,7 @@
   #if !defined(BOARD_NAME)
     #define BOARD_NAME              "TEENSY 4.1"
   #endif
-  
+
   // Use true for NativeEthernet Library, false if using other Ethernet libraries
   #define USE_NATIVE_ETHERNET     false
   #define USE_QN_ETHERNET         true

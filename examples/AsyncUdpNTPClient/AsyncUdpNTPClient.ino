@@ -1,10 +1,10 @@
 /****************************************************************************************************************************
   AsyncUdpNTPClient.ino
-  
+
   For Teensy41 with QNEthernet
-  
+
   AsyncUDP_Teensy41 is a Async UDP library for the Teensy41 using built-in Ethernet and QNEThernet
-  
+
   Based on and modified from ESPAsyncUDP Library (https://github.com/me-no-dev/ESPAsyncUDP)
   Built by Khoi Hoang https://github.com/khoih-prog/AsyncUDP_Teensy41
  *****************************************************************************************************************************/
@@ -37,7 +37,7 @@ AsyncUDP Udp;
 void sendNTPPacket();
 
 // Repeat forever, millis() resolution
-Ticker sendUDPRequest(sendNTPPacket, UDP_REQUEST_INTERVAL_MS, 0, MILLIS); 
+Ticker sendUDPRequest(sendNTPPacket, UDP_REQUEST_INTERVAL_MS, 0, MILLIS);
 
 // send an NTP request to the time server at the given address
 void createNTPpacket(void)
@@ -53,7 +53,7 @@ void createNTPpacket(void)
   packetBuffer[1]   = 0;     // Stratum, or type of clock
   packetBuffer[2]   = 6;     // Polling Interval
   packetBuffer[3]   = 0xEC;  // Peer Clock Precision
-  
+
   // 8 bytes of zero for Root Delay & Root Dispersion
   packetBuffer[12]  = 49;
   packetBuffer[13]  = 0x4E;
@@ -65,7 +65,7 @@ void parsePacket(AsyncUDPPacket packet)
 {
   struct tm  ts;
   char       buf[80];
-  
+
   memcpy(packetBuffer, packet.data(), sizeof(packetBuffer));
 
   Serial.print("Received UDP Packet Type: ");
@@ -88,20 +88,20 @@ void parsePacket(AsyncUDPPacket packet)
   // combine the four bytes (two words) into a long integer
   // this is NTP time (seconds since Jan 1 1900):
   unsigned long secsSince1900 = highWord << 16 | lowWord;
-  
+
   Serial.print(F("Seconds since Jan 1 1900 = "));
   Serial.println(secsSince1900);
 
   // now convert NTP time into )everyday time:
   Serial.print(F("Epoch/Unix time = "));
-  
+
   // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
   const unsigned long seventyYears = 2208988800UL;
-  
+
   // subtract seventy years:
   unsigned long epoch = secsSince1900 - seventyYears;
   time_t epoch_t = epoch;   //secsSince1900 - seventyYears;
- 
+
   // print Unix time:
   Serial.println(epoch);
 
@@ -123,18 +123,22 @@ void sendNTPPacket()
 void setup()
 {
   Serial.begin(115200);
+
   while (!Serial);
 
-  Serial.print("\nStart AsyncUdpNTPClient on "); Serial.println(BOARD_NAME);
+  Serial.print("\nStart AsyncUdpNTPClient on ");
+  Serial.println(BOARD_NAME);
   Serial.println(ASYNC_UDP_TEENSY41_VERSION);
 
 #if defined(ASYNC_UDP_TEENSY41_VERSION_MIN)
+
   if (ASYNC_UDP_TEENSY41_VERSION_INT < ASYNC_UDP_TEENSY41_VERSION_MIN)
   {
     Serial.print("Warning. Must use this example on Version equal or later than : ");
     Serial.println(ASYNC_UDP_TEENSY41_VERSION_MIN_TARGET);
   }
-#endif  
+
+#endif
 
   delay(500);
 
@@ -166,19 +170,20 @@ void setup()
   }
   else
   {
-    Serial.print(F("Connected! IP address:")); Serial.println(Ethernet.localIP());
+    Serial.print(F("Connected! IP address:"));
+    Serial.println(Ethernet.localIP());
   }
 
 #if USING_DHCP
   delay(1000);
-#else  
+#else
   delay(2000);
 #endif
 
 
   //NTP requests are to port NTP_REQUEST_PORT = 123
   if (Udp.connect(timeServerIP, NTP_REQUEST_PORT))
-  //if (Udp.connect(timeServer, NTP_REQUEST_PORT))
+    //if (Udp.connect(timeServer, NTP_REQUEST_PORT))
   {
     Serial.println("UDP connected");
 
