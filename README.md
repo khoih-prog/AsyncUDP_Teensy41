@@ -1,4 +1,4 @@
-# AsyncUDP_Teensy41
+# AsyncUDP_Teensy41 Library
 
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/AsyncUDP_Teensy41.svg?)](https://www.ardu-badge.com/AsyncUDP_Teensy41)
@@ -6,8 +6,11 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/AsyncUDP_Teensy41.svg)](http://github.com/khoih-prog/AsyncUDP_Teensy41/issues)
 
+
 <a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Donate to my libraries using BuyMeACoffee" style="height: 50px !important;width: 181px !important;" ></a>
 <a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-orange.svg?logo=buy-me-a-coffee&logoColor=FFDD00" style="height: 20px !important;width: 200px !important;" ></a>
+<a href="https://profile-counter.glitch.me/khoih-prog/count.svg" title="Total khoih-prog Visitor count"><img src="https://profile-counter.glitch.me/khoih-prog/count.svg" style="height: 30px;width: 200px;"></a>
+<a href="https://profile-counter.glitch.me/khoih-prog-AsyncUDP_Teensy41/count.svg" title="AsyncUDP_Teensy41 Visitor count"><img src="https://profile-counter.glitch.me/khoih-prog-AsyncUDP_Teensy41/count.svg" style="height: 30px;width: 200px;"></a>
 
 ---
 ---
@@ -88,8 +91,8 @@ to apply the better and faster **asynchronous** feature of the **powerful** [ESP
 ## Prerequisites
 
  1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
- 2. [`Teensy core v1.56+`](https://www.pjrc.com/teensy/td_download.html) for Teensy 4.1
- 3. [`QNEthernet Library version v0.13.0+`](https://github.com/ssilverman/QNEthernet) for Teensy 4.1 built-in Ethernet.
+ 2. [`Teensy core v1.57+`](https://www.pjrc.com/teensy/td_download.html) for Teensy 4.1
+ 3. [`QNEthernet Library version v0.16.0+`](https://github.com/ssilverman/QNEthernet) for Teensy 4.1 built-in Ethernet.
  
 ---
 
@@ -104,9 +107,9 @@ The best way is to use `Arduino Library Manager`. Search for `AsyncUDP_Teensy41`
 ### Manual Install
 
 1. Navigate to [AsyncUDP_Teensy41](https://github.com/khoih-prog/AsyncUDP_Teensy41) page.
-2. Download the latest release `AsyncUDP_Teensy41-master.zip`.
-3. Extract the zip file to `AsyncUDP_Teensy41-master` directory 
-4. Copy the whole `AsyncUDP_Teensy41-master` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
+2. Download the latest release `AsyncUDP_Teensy41-main.zip`.
+3. Extract the zip file to `AsyncUDP_Teensy41-main` directory 
+4. Copy the whole `AsyncUDP_Teensy41-main` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
 ### VS Code & PlatformIO:
 
@@ -114,6 +117,9 @@ The best way is to use `Arduino Library Manager`. Search for `AsyncUDP_Teensy41`
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
 3. Install [**AsyncUDP_Teensy41** library](https://registry.platformio.org/libraries/khoih-prog/AsyncUDP_Teensy41) by using [Library Manager](https://registry.platformio.org/libraries/khoih-prog/AsyncUDP_Teensy41/installation). Search for AsyncUDP_Teensy41 in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
 4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
+
+---
+---
 
 ### Packages' Patches
 
@@ -145,14 +151,14 @@ The current library implementation, using `xyz-Impl.h` instead of standard `xyz.
 
 You can include this `.hpp` file
 
-```
+```cpp
 // Can be included as many times as necessary, without `Multiple Definitions` Linker Error
 #include "AsyncUDP_Teensy41.hpp"         //https://github.com/khoih-prog/AsyncUDP_Teensy41
 ```
 
 in many files. But be sure to use the following `.h` file **in just 1 `.h`, `.cpp` or `.ino` file**, which must **not be included in any other file**, to avoid `Multiple Definitions` Linker Error
 
-```
+```cpp
 // To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "AsyncUDP_Teensy41.h"           //https://github.com/khoih-prog/AsyncUDP_Teensy41
 ```
@@ -243,238 +249,12 @@ void loop()
 
 #### 1. File [AsyncUdpNTPClient.ino](examples/AsyncUdpNTPClient/AsyncUdpNTPClient.ino)
 
+https://github.com/khoih-prog/AsyncUDP_Teensy41/blob/f775e6189ef9dfd4b1f0cf9ad27eac60f0b6cba4/examples/AsyncUdpNTPClient/AsyncUdpNTPClient.ino#L12-L204
 
-```cpp
-#include "defines.h"
-#include <time.h>
-
-#include <Ticker.h>                   // https://github.com/sstaub/Ticker
-
-// 0.ca.pool.ntp.org
-IPAddress timeServerIP = IPAddress(208, 81, 1, 244);
-// time.nist.gov
-//IPAddress timeServerIP = IPAddress(132, 163, 96, 1);
-
-#define NTP_REQUEST_PORT      123
-
-//char timeServer[] = "time.nist.gov";  // NTP server
-char timeServer[] = "0.ca.pool.ntp.org";
-
-const int NTP_PACKET_SIZE = 48;       // NTP timestamp is in the first 48 bytes of the message
-
-byte packetBuffer[NTP_PACKET_SIZE];   // buffer to hold incoming and outgoing packets
-
-// A UDP instance to let us send and receive packets over UDP
-AsyncUDP Udp;
-
-// 600s = 10 minutes to not flooding, 60s in testing
-#define UDP_REQUEST_INTERVAL_MS     60000  //600000
-
-void sendNTPPacket();
-
-// Repeat forever, millis() resolution
-Ticker sendUDPRequest(sendNTPPacket, UDP_REQUEST_INTERVAL_MS, 0, MILLIS); 
-
-// send an NTP request to the time server at the given address
-void createNTPpacket(void)
-{
-  Serial.println("============= createNTPpacket =============");
-
-  // set all bytes in the buffer to 0
-  memset(packetBuffer, 0, NTP_PACKET_SIZE);
-  // Initialize values needed to form NTP request
-  // (see URL above for details on the packets)
-
-  packetBuffer[0]   = 0b11100011;   // LI, Version, Mode
-  packetBuffer[1]   = 0;     // Stratum, or type of clock
-  packetBuffer[2]   = 6;     // Polling Interval
-  packetBuffer[3]   = 0xEC;  // Peer Clock Precision
-  
-  // 8 bytes of zero for Root Delay & Root Dispersion
-  packetBuffer[12]  = 49;
-  packetBuffer[13]  = 0x4E;
-  packetBuffer[14]  = 49;
-  packetBuffer[15]  = 52;
-}
-
-void parsePacket(AsyncUDPPacket packet)
-{
-  struct tm  ts;
-  char       buf[80];
-  
-  memcpy(packetBuffer, packet.data(), sizeof(packetBuffer));
-
-  Serial.print("Received UDP Packet Type: ");
-  Serial.println(packet.isBroadcast() ? "Broadcast" : packet.isMulticast() ? "Multicast" : "Unicast");
-  Serial.print("From: ");
-  Serial.print(packet.remoteIP());
-  Serial.print(":");
-  Serial.print(packet.remotePort());
-  Serial.print(", To: ");
-  Serial.print(packet.localIP());
-  Serial.print(":");
-  Serial.print(packet.localPort());
-  Serial.print(", Length: ");
-  Serial.print(packet.length());
-  Serial.println();
-
-  unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
-  unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-
-  // combine the four bytes (two words) into a long integer
-  // this is NTP time (seconds since Jan 1 1900):
-  unsigned long secsSince1900 = highWord << 16 | lowWord;
-  
-  Serial.print(F("Seconds since Jan 1 1900 = "));
-  Serial.println(secsSince1900);
-
-  // now convert NTP time into )everyday time:
-  Serial.print(F("Epoch/Unix time = "));
-  
-  // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
-  const unsigned long seventyYears = 2208988800UL;
-  
-  // subtract seventy years:
-  unsigned long epoch = secsSince1900 - seventyYears;
-  time_t epoch_t = epoch;   //secsSince1900 - seventyYears;
- 
-  // print Unix time:
-  Serial.println(epoch);
-
-  // print the hour, minute and second:
-  Serial.print(F("The UTC/GMT time is "));       // UTC is the time at Greenwich Meridian (GMT)
-
-  ts = *localtime(&epoch_t);
-  strftime(buf, sizeof(buf), "%a %Y-%m-%d %H:%M:%S %Z", &ts);
-  Serial.println(buf);
-}
-
-void sendNTPPacket()
-{
-  createNTPpacket();
-  //Send unicast
-  Udp.write(packetBuffer, sizeof(packetBuffer));
-}
-
-void setup()
-{
-  Serial.begin(115200);
-  while (!Serial);
-
-  Serial.print("\nStart AsyncUdpNTPClient on "); Serial.println(BOARD_NAME);
-  Serial.println(ASYNC_UDP_TEENSY41_VERSION);
-
-#if defined(ASYNC_UDP_TEENSY41_VERSION_MIN)
-  if (ASYNC_UDP_TEENSY41_VERSION_INT < ASYNC_UDP_TEENSY41_VERSION_MIN)
-  {
-    Serial.print("Warning. Must use this example on Version equal or later than : ");
-    Serial.println(ASYNC_UDP_TEENSY41_VERSION_MIN_TARGET);
-  }
-#endif  
-
-  delay(500);
-
-#if USING_DHCP
-  // Start the Ethernet connection, using DHCP
-  Serial.print("Initialize Ethernet using DHCP => ");
-  Ethernet.begin();
-#else
-  // Start the Ethernet connection, using static IP
-  Serial.print("Initialize Ethernet using static IP => ");
-  Ethernet.begin(myIP, myNetmask, myGW);
-  Ethernet.setDNSServerIP(mydnsServer);
-#endif
-
-  if (!Ethernet.waitForLocalIP(5000))
-  {
-    Serial.println(F("Failed to configure Ethernet"));
-
-    if (!Ethernet.linkStatus())
-    {
-      Serial.println(F("Ethernet cable is not connected."));
-    }
-
-    // Stay here forever
-    while (true)
-    {
-      delay(1);
-    }
-  }
-  else
-  {
-    Serial.print(F("Connected! IP address:")); Serial.println(Ethernet.localIP());
-  }
-
-#if USING_DHCP
-  delay(1000);
-#else  
-  delay(2000);
-#endif
-
-
-  //NTP requests are to port NTP_REQUEST_PORT = 123
-  if (Udp.connect(timeServerIP, NTP_REQUEST_PORT))
-  //if (Udp.connect(timeServer, NTP_REQUEST_PORT))
-  {
-    Serial.println("UDP connected");
-
-    Udp.onPacket([](AsyncUDPPacket packet)
-    {
-      parsePacket(packet);
-    });
-  }
-
-  sendNTPPacket();
-
-  sendUDPRequest.start(); //start the ticker
-}
-
-void loop()
-{
-  sendUDPRequest.update();
-}
-```
 
 #### 2. File [defines.h](examples/AsyncUdpNTPClient/defines.h)
 
-```cpp
-#ifndef defines_h
-#define defines_h
-
-#if !( defined(CORE_TEENSY) && defined(__IMXRT1062__) && defined(ARDUINO_TEENSY41) )
-  //#error Only Teensy 4.1 supported
-#endif
-
-#define ASYNC_UDP_TEENSY41_DEBUG_PORT       Serial
-
-// Debug Level from 0 to 4
-#define _ASYNC_UDP_TEENSY41_LOGLEVEL_       4
-
-#define SHIELD_TYPE     "Teensy4.1 QNEthernet"
-
-#if (_ASYNC_UDP_TEENSY41_LOGLEVEL_ > 3)
-  #warning Using QNEthernet lib for Teensy 4.1. Must also use Teensy Packages Patch or error
-#endif
-
-#define USING_DHCP            true
-//#define USING_DHCP            false
-
-#if !USING_DHCP
-  // Set the static IP address to use if the DHCP fails to assign
-  IPAddress myIP(192, 168, 2, 222);
-  IPAddress myNetmask(255, 255, 255, 0);
-  IPAddress myGW(192, 168, 2, 1);
-  //IPAddress mydnsServer(192, 168, 2, 1);
-  IPAddress mydnsServer(8, 8, 8, 8);
-#endif
-
-#include "QNEthernet.h"       // https://github.com/ssilverman/QNEthernet
-using namespace qindesign::network;
-
-#include <AsyncUDP_Teensy41.h>        // https://github.com/khoih-prog/AsyncUDP_Teensy41
-
-#endif    //defines_h
-```
+https://github.com/khoih-prog/AsyncUDP_Teensy41/blob/f775e6189ef9dfd4b1f0cf9ad27eac60f0b6cba4/examples/AsyncUdpNTPClient/defines.h#L12-L47
 
 ---
 
@@ -484,7 +264,7 @@ using namespace qindesign::network;
 
 This is terminal debug output when running [AsyncUdpNTPClient](examples/AsyncUdpNTPClient) on  **Teensy 4.1 using built-in QNEthernet**. It connects to NTP Server "0.ca.pool.ntp.org" (IPAddress(208, 81, 1, 244)) using AsyncUDP_Teensy41 library, and requests NTP time every 60s. The packet is then **received and processed asynchronously** to print current UTC/GMT time.
 
-```
+```cpp
 Start AsyncUdpNTPClient on TEENSY 4.1
 AsyncUDP_Teensy41 v1.2.1
 Initialize Ethernet using DHCP => Connected! IP address:192.168.2.107
@@ -525,7 +305,7 @@ The UTC/GMT time is Sat 2022-03-19 04:04:38 GMT
 
 This is terminal debug output when running [AsyncUDPSendReceive](examples/AsyncUDPSendReceive) on **Teensy 4.1 using built-in QNEthernet**. It connects to NTP Server "time.nist.gov" (IPAddress(208, 81, 1, 244)) using AsyncUDP_Teensy41 library, and requests NTP time every 60s. The packet is then **received and processed asynchronously** to print current UTC/GMT time.
 
-```
+```cpp
 Start AsyncUDPSendReceive on TEENSY 4.1
 AsyncUDP_Teensy41 v1.2.1
 Initialize Ethernet using DHCP => Connected! IP address:192.168.2.107
@@ -615,6 +395,8 @@ Submit issues to: [AsyncUDP_Teensy41 issues](https://github.com/khoih-prog/Async
  1. Initial porting and coding for **Teensy 4.1 using built-in QNEthernet**
  2. Add more examples.
  3. Add debugging features.
+ 4. Add astyle using `allman` style. Restyle the library
+
 
 ---
 ---
@@ -651,7 +433,7 @@ If you want to contribute to this project:
 
 ## Copyright
 
-- Copyright 2016- Hristo Gochkov
-- Copyright 2022- Khoi Hoang
+- Copyright (c) 2016- Hristo Gochkov
+- Copyright (c) 2022- Khoi Hoang
 
 
